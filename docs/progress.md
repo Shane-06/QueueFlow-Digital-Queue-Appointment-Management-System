@@ -10,3 +10,6 @@ Java 21 and Spring Boot 3.5.16 compile and package successfully. FoundationTest 
 
 ## Phase 3 — PostgreSQL foundation
 Three cumulative tests passed: MVC rendering, migration/seed idempotency, and database capacity constraint. A fresh application test context reopened the persisted PostgreSQL records. Schema, foreign keys, indexes and JPA mappings validated. Isolated local development/test databases and ignored credentials configured. V1 uses a transaction-scoped advisory lock for simple cross-instance write serialization, replacing the proposed row-lock ordering.
+
+## Phase 4 — authentication
+Five cumulative tests passed. Verified valid/invalid passwords, student denial on admin routes, CSRF rejection, logout, and unauthenticated redirects. Added backend Actor ownership/role checks and database-backed active-account validation on every authenticated request.
