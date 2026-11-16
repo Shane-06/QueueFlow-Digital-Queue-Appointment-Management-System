@@ -2,7 +2,7 @@
 
 Review date: 16 November 2026
 
-This plan reconciles the updated project document with the original workflow and the existing React prototype. It is a planning deliverable, not authorization to implement every phase. Build and review one phase at a time after the user starts it.
+This plan reconciles the updated project document with the original workflow and the existing React prototype. The user has authorized implementation of all phases in sequence, with testing and a GitHub push after each passing phase.
 
 ## 1. Project outcome
 
@@ -39,7 +39,7 @@ The original Word file has not been overwritten. This corrected plan records the
 
 ## 4. Proposed business rules to settle in phase 1
 
-These are proposed defaults, not decisions already approved by the user.
+The defaults below were adopted in docs/requirements.md following authorization to proceed. The requirements baseline resolves the status and account-provisioning choices.
 
 1. Booking generates an appointment reference. Generate a queue token only on same-day check-in, or when joining a walk-in queue.
 2. Use one FIFO queue per service/day. Appointments join at check-in eligibility time; walk-ins join immediately during opening hours. A slot reserves booking capacity and a check-in window, not a guaranteed service start time. If appointments require priority, revise this rule explicitly before coding.
@@ -120,7 +120,7 @@ The final MVC UI and backend live together in app; a separate frontend/backend s
 | 8. Dashboards and notifications | Student/staff/admin totals, histories, wait estimates, notification read state, useful empty/error states; manual refresh or simple polling. | Different users/browsers see shared database state; counts match queried records for the college service day. |
 | 9. Presentation and delivery | Port/refine visual design, check every route/form/button, responsiveness, integration tests, demo rehearsal, setup guide and database evidence. | Full class demo passes, restart persistence is demonstrated, and every visible action works or is removed. |
 
-Each phase ends with a short explanation of changed files, how to run it, demonstrated behavior, test results, and remaining limitations. The user reviews the phase before starting the next one. Do not build all phases from this planning request.
+Each phase ends with a short explanation of changed files, how to run it, demonstrated behavior, test results, and remaining limitations. Continue automatically after a phase passes its checks and is pushed, as authorized by the user.
 
 ## 8. Existing prototype defects to avoid carrying forward
 
@@ -153,3 +153,4 @@ Defer WebSocket/SSE, SMS/email, QR check-in, kiosk mode, advanced predictions, r
 ## 11. Source and review limits
 
 Reviewed: C:/Users/Lenovo/Downloads/DQAMS_Updated_Java_Project_Context_and_Database_Plan.docx, the previously read original workflow at D:/Project_Planning/Java_Project/Digital_Queue_Appointment_Management_System_Workflow.docx, and the existing project source. This is a requirements/content and source review, not a page-layout audit of the Word document or a fresh interactive test of every screen. No application implementation or original-document modification was performed in this planning step.
+
