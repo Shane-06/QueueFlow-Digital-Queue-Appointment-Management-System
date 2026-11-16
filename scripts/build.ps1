@@ -4,6 +4,11 @@ $projectRoot = Split-Path $PSScriptRoot -Parent
 $localJdk = Get-ChildItem "$projectRoot/.tools/jdk" -Directory -ErrorAction SilentlyContinue | Select-Object -First 1
 if ($localJdk) { $env:JAVA_HOME = $localJdk.FullName; $env:PATH = "$env:JAVA_HOME/bin;$env:PATH" }
 $env:MAVEN_USER_HOME = "$projectRoot/.tools/maven-user"
+if (Test-Path "$projectRoot/.local/db-password") {
+  $env:DB_PASSWORD=[IO.File]::ReadAllText("$projectRoot/.local/db-password")
+  $env:DB_URL='jdbc:postgresql://localhost:55432/queueflow_test'
+  $env:DB_USERNAME='queueflow'
+}
 $maven = "$projectRoot/.tools/apache-maven-3.9.11/bin/mvn.cmd"
 if (-not (Test-Path $maven)) { $maven = "$projectRoot/app/mvnw.cmd" }
 Push-Location "$projectRoot/app"
