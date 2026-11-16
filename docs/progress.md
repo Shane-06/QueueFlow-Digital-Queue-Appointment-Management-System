@@ -13,3 +13,6 @@ Three cumulative tests passed: MVC rendering, migration/seed idempotency, and da
 
 ## Phase 4 — authentication
 Five cumulative tests passed. Verified valid/invalid passwords, student denial on admin routes, CSRF rejection, logout, and unauthenticated redirects. Added backend Actor ownership/role checks and database-backed active-account validation on every authenticated request.
+
+## Phase 5 — administrator configuration
+Eight cumulative tests passed. All service/counter/account/schedule templates render; configuration persists; invalid hours and student service-layer access are rejected. Rendering tests exposed and resolved the account-role selector syntax before publication. Added audited admin forms, working days, breaks, holidays and conservative booking-conflict protection.
