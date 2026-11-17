@@ -16,3 +16,6 @@ Five cumulative tests passed. Verified valid/invalid passwords, student denial o
 
 ## Phase 5 — administrator configuration
 Eight cumulative tests passed. All service/counter/account/schedule templates render; configuration persists; invalid hours and student service-layer access are rejected. Rendering tests exposed and resolved the account-role selector syntax before publication. Added audited admin forms, working days, breaks, holidays and conservative booking-conflict protection.
+
+## Phase 6 — appointments (17 November 2026)
+Thirteen cumulative tests pass, including simultaneous PostgreSQL bookings for one remaining place (exactly one winner), duplicate-submit idempotency, cancellation, failed-reschedule preservation, past-date rejection and student template rendering. Added schedule-driven slots, same-day check-in and background no-show processing. Boundary and check-in coverage will be expanded during final acceptance; this record does not claim all acceptance cases have been exercised.
