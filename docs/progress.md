@@ -19,3 +19,6 @@ Eight cumulative tests passed. All service/counter/account/schedule templates re
 
 ## Phase 6 — appointments (17 November 2026)
 Thirteen cumulative tests pass, including simultaneous PostgreSQL bookings for one remaining place (exactly one winner), duplicate-submit idempotency, cancellation, failed-reschedule preservation, past-date rejection and student template rendering. Added schedule-driven slots, same-day check-in and background no-show processing. Boundary and check-in coverage will be expanded during final acceptance; this record does not claim all acceptance cases have been exercised.
+
+## Phase 7 — queue operations
+Seventeen cumulative tests passed, including two concurrent counters competing for one waiting token (one winner), invalid completion rejection, hold/requeue release, and staff/student queue-page rendering. Added date-filtered selection, assigned-counter checks, walk-in tokens and closeout actions.
