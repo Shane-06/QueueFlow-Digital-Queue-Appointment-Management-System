@@ -25,3 +25,6 @@ Seventeen cumulative tests passed, including two concurrent counters competing f
 
 ## Phase 8 — dashboards and history
 Eighteen cumulative tests passed. All three dashboards and admin appointment/queue/report/audit pages render, as do student notifications and profile. Counts are derived from persisted college-day records, notifications enforce recipient ownership, and manual refresh reads shared PostgreSQL state.
+
+## Phase 9 — acceptance and delivery (17 November 2026)
+All 26 automated tests pass (zero failures/errors). Packaged application starts successfully. Headless Edge verified three real logins/logouts, every role route, a browser-created appointment, and desktop/mobile dashboards without overflow or page errors. Desktop/mobile screenshots were inspected locally. The same browser-created appointment was verified after stopping and restarting Java. Added setup/demo documentation and PostgreSQL-backed GitHub Actions workflow; remote CI results are separate from these local results. Fixed staff dashboard service scoping and friendly missing-record errors. Browser reports, screenshots, credentials, tool installs and database files remain ignored. Deferred features and college-scale locking limits are documented in README and demo guide.

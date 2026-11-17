@@ -1,0 +1,33 @@
+name: Verify QueueFlow
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: queueflow_test
+          POSTGRES_USER: queueflow
+          POSTGRES_PASSWORD: ci-ephemeral-database
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DB_URL: jdbc:postgresql://localhost:5432/queueflow_test
+      DB_USERNAME: queueflow
+      DB_PASSWORD: ci-ephemeral-database
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - run: bash mvnw --batch-mode verify
+        working-directory: app
