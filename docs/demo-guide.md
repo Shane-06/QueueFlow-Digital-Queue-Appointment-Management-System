@@ -18,3 +18,11 @@ scripts/check-repository.ps1 checks tracked-file exclusions and common credentia
 
 ## Known operational limits
 Queue estimates use eligible waiting people ahead multiplied by configured service duration; they are approximate, especially with multiple counters. Updates require refresh. V1 serializes business writes with a PostgreSQL advisory lock; this favors correctness at college-demo scale over high throughput. Staff resolve active tokens before closing a service day. Public registration, report export and external notifications are outside V1.
+
+## Repeat the full browser flow
+
+On this Windows computer, build first, then run `./scripts/run-flow-check.ps1`. The helper uses the existing project-local Java/PostgreSQL setup, the generated local demo password and a headless Edge browser. If the optional browser helper is missing, install it with `npm.cmd install --prefix .tools/browser playwright --no-audit --no-fund`. The Java application must be stopped before rebuilding its packaged JAR on Windows.
+
+The flow check creates a separate timestamped PostgreSQL database and runs the packaged application on port 8081. It configures test service hours through the admin forms so that queue operations can be tested at any time of day. This leaves the normal queueflow database and its office hours untouched. Port 8081 must be free. The temporary application stops at the end; its database and screenshots under .local/ui-review remain locally for diagnosis and are excluded from Git.
+
+Browser assertions cover service search, booking, rescheduling with the original date preserved, cancellation, appointment history, walk-in joining, selecting Counter 2, call/hold/requeue/start/complete, busy-counter button disabling, status changes across separate student/staff sessions, permanent walk-in history, skip reasons, same-day appointment check-in and linked completion, notification read state, admin service deactivation, student denial on admin routes, mobile navigation, horizontal overflow and browser errors. The same-day browser check is skipped only when no arrival windows remain at the end of a day; fixed-clock automated tests always exercise check-in.
