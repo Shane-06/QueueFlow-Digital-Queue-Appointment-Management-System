@@ -22,3 +22,6 @@ Thirteen cumulative tests pass, including simultaneous PostgreSQL bookings for o
 
 ## Phase 7 — queue operations
 Seventeen cumulative tests passed, including two concurrent counters competing for one waiting token (one winner), invalid completion rejection, hold/requeue release, and staff/student queue-page rendering. Added date-filtered selection, assigned-counter checks, walk-in tokens and closeout actions.
+
+## Phase 8 — dashboards and history
+Eighteen cumulative tests passed. All three dashboards and admin appointment/queue/report/audit pages render, as do student notifications and profile. Counts are derived from persisted college-day records, notifications enforce recipient ownership, and manual refresh reads shared PostgreSQL state.

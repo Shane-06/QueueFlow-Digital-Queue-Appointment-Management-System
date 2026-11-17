@@ -8,6 +8,4 @@ public class AuthController {
     private final Actor actor;public AuthController(Actor actor){this.actor=actor;}
     @GetMapping("/login") public String login(){return "login";}
     @GetMapping("/dashboard") public String dashboard(){return "redirect:/"+actor.current().role.toLowerCase()+"/dashboard";}
-    @GetMapping({"/student/dashboard","/staff/dashboard","/admin/dashboard"})
-    public String roleDashboard(Model model){model.addAttribute("account",actor.current());return "dashboard";}
 }

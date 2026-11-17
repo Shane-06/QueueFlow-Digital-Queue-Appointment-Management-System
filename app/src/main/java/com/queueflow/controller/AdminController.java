@@ -11,6 +11,8 @@ import java.util.*;
 
 @Controller @RequestMapping("/admin")
 public class AdminController {
+    @org.springframework.beans.factory.annotation.Autowired private com.queueflow.service.AppointmentService appointments;
+    @PostMapping("/appointments/{id}/cancel")public String cancelAppointment(@PathVariable Long id){appointments.cancel(id);return "redirect:/admin/appointments";}
     private final Store db;private final Actor actor;private final AdminService admin;
     public AdminController(Store db,Actor actor,AdminService admin){this.db=db;this.actor=actor;this.admin=admin;}
     @GetMapping({"/services","/counters","/staff","/schedules"})
