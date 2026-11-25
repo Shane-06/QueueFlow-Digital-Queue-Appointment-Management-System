@@ -17,6 +17,34 @@ class SecurityTest {
         mvc.perform(post("/login").with(csrf()).param("username","student@queueflow.local").param("password","wrong")).andExpect(unauthenticated());
         mvc.perform(post("/login").with(csrf()).param("username","student@queueflow.local").param("password","Integration-test-only-42")).andExpect(authenticated()).andExpect(redirectedUrl("/dashboard"));
     }
+    @Test void selectedWorkspaceOnlyAcceptsMatchingAccounts() throws Exception {
+        var roles = java.util.List.of("student", "staff", "admin");
+        for (String selectedRole : roles) {
+            for (String accountRole : roles) {
+                var result = mvc.perform(post("/login").with(csrf())
+                    .param("role", selectedRole)
+                    .param("username", accountRole + "@queueflow.local")
+                    .param("password", "Integration-test-only-42"));
+                if (selectedRole.equals(accountRole)) {
+                    result.andExpect(authenticated()).andExpect(redirectedUrl("/dashboard"));
+                } else {
+                    result.andExpect(unauthenticated())
+                        .andExpect(redirectedUrl("/login?role=" + selectedRole + "&workspaceMismatch"));
+                }
+            }
+        }
+    }
+
+    @Test void failedWorkspaceLoginPreservesSelectionForRetry() throws Exception {
+        mvc.perform(post("/login").with(csrf()).param("role", "student")
+                .param("username", "student@queueflow.local").param("password", "wrong"))
+            .andExpect(unauthenticated()).andExpect(redirectedUrl("/login?role=student&error"));
+        mvc.perform(get("/login").param("role", "student").param("workspaceMismatch", ""))
+            .andExpect(status().isOk())
+            .andExpect(content().string(org.hamcrest.Matchers.containsString("name=\"role\" value=\"student\"")))
+            .andExpect(content().string(org.hamcrest.Matchers.containsString("cannot sign in to the Student workspace")));
+    }
+
     @Test void studentCannotOpenAdminAndCsrfIsRequired() throws Exception {
         mvc.perform(get("/admin/dashboard").with(user("student@queueflow.local").roles("STUDENT"))).andExpect(status().isForbidden());
         mvc.perform(post("/logout").with(user("student@queueflow.local").roles("STUDENT"))).andExpect(status().isForbidden());

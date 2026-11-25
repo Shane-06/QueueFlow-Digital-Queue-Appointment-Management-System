@@ -1,6 +1,7 @@
 package com.queueflow.security;
 import com.queueflow.repository.UserRepository;
 import org.springframework.context.annotation.*;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,11 +20,20 @@ public class SecurityConfig {
     @Bean UserDetailsService userDetails(UserRepository users){return email->users.findByEmail(email.trim().toLowerCase())
         .map(u->User.withUsername(u.email).password(u.passwordHash).roles(u.role).disabled(!u.active).build())
         .orElseThrow(()->new UsernameNotFoundException("Invalid credentials"));}
-    @Bean SecurityFilterChain security(HttpSecurity http,UserRepository users) throws Exception {
-        http.authorizeHttpRequests(a->a.requestMatchers("/","/login","/css/**","/js/**","/error").permitAll()
+    @Bean SecurityFilterChain security(HttpSecurity http, UserRepository users,
+                                      UserDetailsService userDetails, PasswordEncoder passwordEncoder) throws Exception {
+        var provider = new DaoAuthenticationProvider(userDetails);
+        provider.setPasswordEncoder(passwordEncoder);
+        http.authenticationManager(WorkspaceLogin.authenticationManager(provider));
+        http.authorizeHttpRequests(a->a.requestMatchers("/","/sign-in","/login","/css/**","/js/**","/images/campus-services.webp","/error").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN").requestMatchers("/staff/**").hasRole("STAFF")
             .requestMatchers("/student/**").hasRole("STUDENT").anyRequest().authenticated())
-            .formLogin(f->f.loginPage("/login").defaultSuccessUrl("/dashboard",true).permitAll())
+            .formLogin(form -> form.loginPage("/login")
+                .authenticationDetailsSource(WorkspaceLogin::new)
+                .failureHandler((request, response, failure) ->
+                    response.sendRedirect(request.getContextPath() + WorkspaceLogin.failurePath(request, failure)))
+                .defaultSuccessUrl("/dashboard", true)
+                .permitAll())
             .logout(l->l.logoutSuccessUrl("/login?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID"))
             .addFilterBefore(new OncePerRequestFilter(){
                 @Override protected void doFilterInternal(HttpServletRequest req,HttpServletResponse res,FilterChain chain) throws IOException,ServletException {

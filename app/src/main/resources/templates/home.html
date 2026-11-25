@@ -1,3 +1,64 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>QueueFlow</title><link rel="stylesheet" th:href="@{/css/app.css}"></head>
-<body><main class="welcome"><span class="eyebrow">COLLEGE SERVICES</span><h1>QueueFlow</h1><p>Appointments and service queues, in one place.</p><a class="button" th:href="@{/login}">Sign in</a></main></body></html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Book college service appointments and follow your queue with QueueFlow.">
+    <title>QueueFlow | College Services</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="stylesheet" th:href="@{/css/entry.css}">
+</head>
+<body class="entry-page">
+<header class="entry-header">
+    <div class="entry-shell entry-header-inner">
+        <a class="entry-brand" th:href="@{/}" aria-label="QueueFlow home">
+            <span class="entry-mark" aria-hidden="true">Q</span>
+            <span>QueueFlow <small>College services</small></span>
+        </a>
+        <nav class="entry-nav" aria-label="Main navigation">
+            <a class="entry-nav-link" href="#workspaces">Workspaces</a>
+            <a class="entry-button" th:href="@{/sign-in}">Sign in</a>
+        </nav>
+    </div>
+</header>
+<main class="entry-shell">
+    <section class="entry-hero" aria-labelledby="welcome-title">
+        <div class="entry-hero-copy">
+            <p class="entry-kicker">Campus service portal</p>
+            <h1 id="welcome-title">College services<br>made simpler.</h1>
+            <p class="entry-intro">Book an appointment, join a queue and know when it’s your turn at the college service counter.</p>
+            <a class="entry-button entry-button-gold" th:href="@{/sign-in}">Sign in to QueueFlow</a>
+        </div>
+        <img class="entry-hero-image" th:src="@{/images/campus-services.webp}" width="960" height="720"
+             alt="Students submitting documents at a college service desk" fetchpriority="high">
+    </section>
+
+    <section class="entry-workspaces" id="workspaces" aria-labelledby="workspaces-title">
+        <h2 id="workspaces-title">Campus workspaces</h2>
+        <div class="entry-workspace-grid">
+            <article class="entry-workspace">
+                <div th:replace="~{entry-icons :: student}"></div>
+                <h3>Student</h3>
+                <p>Book services such as Marksheet Verification, check in and track your token.</p>
+            </article>
+            <article class="entry-workspace">
+                <div th:replace="~{entry-icons :: staff}"></div>
+                <h3>Staff</h3>
+                <p>Call the next student and manage visits at your assigned counter.</p>
+            </article>
+            <article class="entry-workspace">
+                <div th:replace="~{entry-icons :: admin}"></div>
+                <h3>Admin</h3>
+                <p>Set service hours, assign counters and review daily activity.</p>
+            </article>
+        </div>
+    </section>
+</main>
+<footer class="entry-footer">
+    <div class="entry-shell entry-footer-inner">
+        <strong>QueueFlow</strong>
+        <span>Need an account? Contact your college administrator.</span>
+    </div>
+</footer>
+</body>
+</html>

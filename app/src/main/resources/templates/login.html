@@ -1,1 +1,45 @@
-<!doctype html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sign in · QueueFlow</title><link rel="stylesheet" th:href="@{/css/app.css}"></head><body><main class="welcome"><span class="eyebrow">QUEUEFLOW · COLLEGE SERVICES</span><h1>Welcome back</h1><p>Sign in with your college service account.</p><p th:if="${param.error}" role="alert">Email or password is incorrect, or your account is inactive.</p><p th:if="${param.logout}">You have signed out.</p><p th:if="${param.disabled}" role="alert">Your account access changed. Please sign in again.</p><form th:action="@{/login}" method="post"><label for="email">Email</label><input id="email" name="username" type="email" autocomplete="username" required><label for="password">Password</label><input id="password" name="password" type="password" autocomplete="current-password" required><p><button type="submit">Sign in</button></p></form><small>Need an account? Contact the college administrator.</small></main></body></html>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign in | QueueFlow</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="stylesheet" th:href="@{/css/entry.css}">
+</head>
+<body class="entry-page">
+<header class="entry-header">
+    <div class="entry-shell entry-header-inner">
+        <a class="entry-brand" th:href="@{/}" aria-label="QueueFlow home">
+            <span class="entry-mark" aria-hidden="true">Q</span>
+            <span>QueueFlow <small>College services</small></span>
+        </a>
+        <a class="entry-nav-link" th:href="@{/sign-in}">Choose workspace</a>
+    </div>
+</header>
+<main class="entry-shell entry-auth">
+    <section class="entry-auth-copy" aria-labelledby="sign-in-title">
+        <p class="entry-kicker">Account access</p>
+        <h1 id="sign-in-title" th:text="${roleName != null ? roleName + ' sign-in' : 'Sign in to QueueFlow'}">Sign in to QueueFlow</h1>
+        <p th:if="${roleName != null}" th:text="${'Sign in with your ' + roleName + ' account.'}"></p>
+        <p th:if="${roleName == null}">Sign in with your college service account.</p>
+    </section>
+    <div class="entry-login">
+        <p class="entry-alert" th:if="${param.workspaceMismatch != null and roleName != null}" role="alert"
+           th:text="${'This account cannot sign in to the ' + roleName + ' workspace. Use a matching account or choose another workspace.'}"></p>
+        <p class="entry-alert" th:if="${param.error}" role="alert">Email or password is incorrect, or your account is inactive.</p>
+        <p class="entry-message" th:if="${param.logout}" role="status">You have signed out.</p>
+        <p class="entry-alert" th:if="${param.disabled}" role="alert">Your account access changed. Please sign in again.</p>
+        <form th:action="@{/login}" method="post">
+            <input th:if="${workspaceRole != null}" type="hidden" name="role" th:value="${workspaceRole}">
+            <label for="email">Email</label>
+            <input id="email" name="username" type="email" autocomplete="username" required>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+            <button class="entry-button" type="submit">Sign in</button>
+        </form>
+        <p class="entry-help">Need an account? Contact your college administrator.</p>
+    </div>
+</main>
+</body>
+</html>

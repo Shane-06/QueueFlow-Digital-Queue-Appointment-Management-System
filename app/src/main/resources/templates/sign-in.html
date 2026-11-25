@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Choose your workspace | QueueFlow</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+    <link rel="stylesheet" th:href="@{/css/entry.css}">
+</head>
+<body class="entry-page">
+<header class="entry-header">
+    <div class="entry-shell entry-header-inner">
+        <a class="entry-brand" th:href="@{/}" aria-label="QueueFlow home">
+            <span class="entry-mark" aria-hidden="true">Q</span>
+            <span>QueueFlow <small>College services</small></span>
+        </a>
+        <a class="entry-nav-link" th:href="@{/}">Back to home</a>
+    </div>
+</header>
+<main class="entry-shell entry-auth">
+    <section class="entry-auth-copy" aria-labelledby="choose-title">
+        <p class="entry-kicker">Sign in</p>
+        <h1 id="choose-title">Choose your workspace.</h1>
+        <p>Select the role that matches your college account.</p>
+    </section>
+    <div class="entry-roles" aria-label="Sign-in options">
+        <a class="entry-role" th:href="@{/login(role='student')}">
+            <span th:replace="~{entry-icons :: student}"></span>
+            <span><strong>Student</strong><span>Appointments, queue tokens and visit history.</span></span>
+            <span class="entry-role-chevron" aria-hidden="true"></span>
+        </a>
+        <a class="entry-role" th:href="@{/login(role='staff')}">
+            <span th:replace="~{entry-icons :: staff}"></span>
+            <span><strong>Staff</strong><span>Assigned service counters and queue operations.</span></span>
+            <span class="entry-role-chevron" aria-hidden="true"></span>
+        </a>
+        <a class="entry-role" th:href="@{/login(role='admin')}">
+            <span th:replace="~{entry-icons :: admin}"></span>
+            <span><strong>Admin</strong><span>Services, schedules and college operations.</span></span>
+            <span class="entry-role-chevron" aria-hidden="true"></span>
+        </a>
+    </div>
+</main>
+</body>
+</html>
