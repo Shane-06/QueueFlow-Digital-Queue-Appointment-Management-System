@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{workspace-layout :: head(${account.role == 'ADMIN' ? 'Campus operations' : 'Staff overview'})}"></head>
+<body class="workspace-theme operations-theme" th:with="admin=${account.role == 'ADMIN'}">
+<header th:replace="~{fragments :: header}"></header>
+<aside th:replace="~{fragments :: nav}"></aside>
+<main class="workspace">
+    <section class="workspace-hero">
+        <div class="workspace-hero-copy">
+            <p class="workspace-kicker" th:text="${#temporals.format(today, 'EEEE, d MMMM')}"></p>
+            <h1 th:text="${admin ? 'Campus operations' : 'Counter overview'}"></h1>
+            <p th:text="${admin ? 'Manage college services and see how appointments and queues are moving today.' : 'See who is waiting, check today’s bookings and open your assigned counter.'}"></p>
+            <div class="actions" th:if="${admin}">
+                <a class="button workspace-gold" th:href="@{/admin/services}">Manage services</a>
+                <a class="button workspace-hero-link" th:href="@{/admin/reports}">View reports</a>
+            </div>
+            <div class="actions" th:unless="${admin}">
+                <a class="button workspace-gold" th:href="@{/staff/queue}">Open service counter</a>
+                <a class="button workspace-hero-link" th:href="@{/staff/appointments}">Today’s appointments</a>
+            </div>
+        </div>
+        <img th:src="${admin} ? @{/images/campus-operations.webp} : @{/images/service-counter.webp}"
+             width="1280" height="960" alt="">
+    </section>
+
+    <div class="workspace-overview-counts operations-counts" aria-label="Today’s service activity"
+         th:with="appointmentsUrl=${admin} ? @{/admin/appointments} : @{/staff/appointments},
+                  queueUrl=${admin} ? @{/admin/queue} : @{/staff/queue},
+                  historyUrl=${admin} ? @{/admin/reports} : @{/staff/history}">
+        <a class="workspace-count" th:href="${appointmentsUrl}">
+            <strong th:text="${appointmentCount}">0</strong><span>Appointments today</span>
+        </a>
+        <a class="workspace-count" th:href="${queueUrl}">
+            <strong th:text="${counts['WAITING']}">0</strong><span>Waiting in queue</span>
+        </a>
+        <a class="workspace-count" th:href="${queueUrl}">
+            <strong th:text="${counts['CALLED'] + counts['SERVING']}">0</strong><span>In service</span>
+        </a>
+        <a class="workspace-count" th:href="${historyUrl}">
+            <strong th:text="${counts['COMPLETED']}">0</strong><span>Completed today</span>
+        </a>
+    </div>
+
+    <div class="workspace-dashboard-grid">
+        <section class="panel">
+            <div class="panel-header">
+                <h2>Active queue</h2>
+                <a th:href="${admin} ? @{/admin/queue} : @{/staff/queue}">View queue</a>
+            </div>
+            <div class="empty" th:if="${activeEntries.isEmpty()}">
+                <strong>No active tokens</strong>
+                <span>New check-ins and walk-ins will appear here.</span>
+            </div>
+            <div class="workspace-summary-row" th:each="q,stat : ${activeEntries}" th:if="${stat.index < 6}">
+                <div><strong th:text="${q.token}"></strong>
+                    <div class="muted" th:text="${services.?[id == #vars.q.serviceId][0].name}"></div></div>
+                <span class="badge" th:text="${q.status}"></span>
+            </div>
+        </section>
+        <div class="workspace-dashboard-side">
+            <section class="panel">
+                <div class="panel-header">
+                    <h2>Today’s bookings</h2>
+                    <a th:href="${admin} ? @{/admin/appointments} : @{/staff/appointments}">View all</a>
+                </div>
+                <p class="muted" th:if="${todayAppointments.isEmpty()}">No appointments scheduled for today.</p>
+                <div class="workspace-summary-row" th:each="a,stat : ${todayAppointments}" th:if="${stat.index < 4}">
+                    <strong th:text="${services.?[id == #vars.a.serviceId][0].name}"></strong>
+                    <span class="badge" th:text="${a.status}"></span>
+                </div>
+            </section>
+            <section class="panel" th:if="${admin}">
+                <div class="panel-header"><h2>Administration</h2></div>
+                <div class="operations-links">
+                    <a th:href="@{/admin/counters}">Counters</a>
+                    <a th:href="@{/admin/staff}">Accounts &amp; staff</a>
+                    <a th:href="@{/admin/schedules}">Schedules</a>
+                    <a th:href="@{/admin/audit}">Audit history</a>
+                </div>
+            </section>
+            <section class="panel" th:unless="${admin}">
+                <div class="panel-header"><h2>Service history</h2><a th:href="@{/staff/history}">View history</a></div>
+                <p class="muted">Review completed and skipped tokens for services your counter handles.</p>
+            </section>
+        </div>
+    </div>
+</main>
+</body>
+</html>

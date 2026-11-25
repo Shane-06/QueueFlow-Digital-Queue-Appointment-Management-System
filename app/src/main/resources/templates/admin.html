@@ -1,4 +1,11 @@
-<!doctype html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{fragments :: head('Administration')}"></head><body><header th:replace="~{fragments :: header}"></header><aside th:replace="~{fragments :: nav}"></aside><main class="workspace"><div class="eyebrow">ADMINISTRATION</div><h1 th:text="${#strings.capitalize(page)}"></h1>
+<!doctype html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head th:replace="~{workspace-layout :: head('Administration')}"></head><body class="workspace-theme operations-theme"><header th:replace="~{fragments :: header}"></header><aside th:replace="~{fragments :: nav}"></aside><main class="workspace"><div class="page-heading workspace-heading"><div>
+    <h1 th:text="${page == 'staff' ? 'Accounts &amp; staff' : #strings.capitalize(page)}"></h1>
+    <p th:switch="${page}"><span th:case="'services'">Set which services students can book or join as walk-ins.</span>
+        <span th:case="'counters'">Assign staff and services to each counter.</span>
+        <span th:case="'schedules'">Manage working hours, breaks, and closures.</span>
+        <span th:case="*">Create and manage student, staff, and admin accounts.</span>
+    </p>
+</div></div>
 <section th:if="${page=='services'}"><details class="panel"><summary>Add a service</summary><div th:replace="~{forms :: serviceForm(${newService})}"></div></details><details class="panel" th:each="s:${services}"><summary><span th:text="${s.name}"></span> <span class="badge" th:text="${s.active?'ACTIVE':'INACTIVE'}"></span></summary><div th:replace="~{forms :: serviceForm(${s})}"></div></details></section>
 <section th:if="${page=='staff'}"><p>Provision student, staff and administrator accounts. Existing roles are fixed.</p><details class="panel"><summary>Create account</summary><div th:replace="~{forms :: userForm(${newUser})}"></div></details><details class="panel" th:each="u:${users}"><summary th:text="${u.name}+' · '+${u.role}+' · '+${u.active?'ACTIVE':'INACTIVE'}"></summary><div th:replace="~{forms :: userForm(${u})}"></div></details></section>
 <section th:if="${page=='counters'}"><details class="panel"><summary>Add counter</summary><div th:replace="~{forms :: counterForm(${newCounter})}"></div></details><details class="panel" th:each="c:${counters}"><summary th:text="${c.name}+' · '+${c.location}"></summary><div th:replace="~{forms :: counterForm(${c})}"></div></details></section>

@@ -17,11 +17,36 @@ public class OverviewController {
   var appointments=u.role.equals("STUDENT")?db.list(Appointment.class,"from Appointment where userId=?1 order by day desc",u.id):db.list(Appointment.class,"from Appointment order by day desc,id desc");
   var entries=u.role.equals("STUDENT")?db.list(QueueEntry.class,"from QueueEntry where userId=?1 and day=?2 order by id",u.id,schedule.today()):db.list(QueueEntry.class,"from QueueEntry where day=?1 order by id",schedule.today());
   if(u.role.equals("STAFF")){appointments=appointments.stream().filter(a->a.day.equals(schedule.today())&&!db.sql("select 1 from counter_services cs join staff_counters sc on sc.counter_id=cs.counter_id where sc.user_id=?1 and cs.service_id=?2",u.id,a.serviceId).isEmpty()).toList();entries=entries.stream().filter(q->!db.sql("select 1 from counter_services cs join staff_counters sc on sc.counter_id=cs.counter_id where sc.user_id=?1 and cs.service_id=?2",u.id,q.serviceId).isEmpty()).toList();}
-  m.addAttribute("appointments",appointments);m.addAttribute("entries",entries);m.addAttribute("services",db.all(ServiceOffering.class));m.addAttribute("notifications",db.list(Notification.class,"from Notification where userId=?1 order by createdAt desc",u.id));
+  m.addAttribute("appointments",appointments);m.addAttribute("entries",entries);m.addAttribute("services",db.all(ServiceOffering.class));var notifications = db.list(Notification.class, "from Notification where userId=?1 order by createdAt desc", u.id);
+  m.addAttribute("notifications", notifications);
+  if (u.role.equals("STUDENT")) {
+      if (!page.equals("dashboard")) {
+          return "student-account";
+      }
+      var today = schedule.today();
+      m.addAttribute("upcomingAppointments", appointments.stream()
+          .filter(a -> a.status.equals("BOOKED") && !a.day.isBefore(today))
+          .sorted(Comparator.comparing(a -> a.day))
+          .toList());
+      m.addAttribute("activeEntries", entries.stream()
+          .filter(q -> List.of("WAITING", "CALLED", "SERVING", "HOLD").contains(q.status))
+          .toList());
+      m.addAttribute("unreadCount", notifications.stream().filter(n -> !n.seen).count());
+      return "student-dashboard";
+  }
   Map<String,Long> counts=new LinkedHashMap<>();for(String status:List.of("WAITING","CALLED","SERVING","COMPLETED","HOLD","SKIPPED"))counts.put(status,entries.stream().filter(q->q.status.equals(status)).count());m.addAttribute("counts",counts);
   m.addAttribute("appointmentCount",appointments.stream().filter(a->a.day.equals(schedule.today())).count());m.addAttribute("noShows",appointments.stream().filter(a->a.day.equals(schedule.today())&&a.status.equals("NO_SHOW")).count());m.addAttribute("cancellations",appointments.stream().filter(a->a.day.equals(schedule.today())&&a.status.equals("CANCELLED")).count());
   m.addAttribute("averageWait",Math.round(entries.stream().filter(q->q.calledAt!=null).mapToLong(q->java.time.Duration.between(q.joinedAt,q.calledAt).toMinutes()).average().orElse(0)));
-  m.addAttribute("logs",u.role.equals("ADMIN")?db.list(AuditLog.class,"from AuditLog order by createdAt desc"):List.of());return "overview";
+  if (page.equals("dashboard")) {
+      var today = schedule.today();
+      m.addAttribute("todayAppointments", appointments.stream().filter(a -> a.day.equals(today)).toList());
+      m.addAttribute("activeEntries", entries.stream()
+          .filter(q -> List.of("WAITING", "CALLED", "SERVING", "HOLD").contains(q.status))
+          .toList());
+      return "operations-dashboard";
+  }
+  m.addAttribute("logs",u.role.equals("ADMIN")?db.list(AuditLog.class,"from AuditLog order by createdAt desc"):List.of());
+  return "overview";
  }
  @PostMapping("/student/notifications/{id}/read") @Transactional public String read(@PathVariable Long id){actor.require("STUDENT");Notification n=db.get(Notification.class,id);actor.owns(n.userId);n.seen=true;return "redirect:/student/notifications";}
 }

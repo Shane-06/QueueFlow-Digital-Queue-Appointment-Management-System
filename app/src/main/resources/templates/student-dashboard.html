@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{workspace-layout :: head('Student overview')}"></head>
+<body class="workspace-theme student-theme">
+<header th:replace="~{fragments :: header}"></header>
+<aside th:replace="~{fragments :: nav}"></aside>
+<main class="workspace">
+    <section class="workspace-hero">
+        <div class="workspace-hero-copy">
+            <p class="workspace-kicker" th:text="${#temporals.format(today, 'EEEE, d MMMM')}"></p>
+            <h1 th:text="|Welcome, ${account.name}|">Welcome</h1>
+            <p>Book your next visit or check the status of today’s queue.</p>
+            <div class="actions">
+                <a class="button workspace-gold" th:href="@{/student/services}">Browse services</a>
+                <a class="button workspace-hero-link" th:href="@{/student/queue}">View my queue</a>
+            </div>
+        </div>
+        <img th:src="@{/images/campus-services.webp}" alt="" width="1280" height="960">
+    </section>
+
+    <div class="workspace-overview-counts" aria-label="Student activity">
+        <a class="workspace-count" th:href="@{/student/appointments}">
+            <strong th:text="${upcomingAppointments.size()}">0</strong><span>Upcoming appointments</span>
+        </a>
+        <a class="workspace-count" th:href="@{/student/queue}">
+            <strong th:text="${activeEntries.size()}">0</strong><span>Active queue tokens</span>
+        </a>
+        <a class="workspace-count" th:href="@{/student/notifications}">
+            <strong th:text="${unreadCount}">0</strong><span>Unread updates</span>
+        </a>
+    </div>
+
+    <div class="workspace-dashboard-grid">
+        <section class="panel student-panel">
+            <div class="panel-header"><h2>Upcoming appointments</h2><a th:href="@{/student/appointments}" aria-label="View all appointments">View all</a></div>
+            <div class="empty" th:if="${upcomingAppointments.isEmpty()}">
+                <strong>No upcoming bookings</strong>
+                <a th:href="@{/student/services}">Browse college services</a>
+            </div>
+            <div class="workspace-summary-row" th:each="a,stat : ${upcomingAppointments}" th:if="${stat.index < 4}">
+                <div>
+                    <strong th:text="${services.?[id==#vars.a.serviceId][0].name}"></strong>
+                    <div class="muted" th:text="${#temporals.format(a.day, 'EEE, d MMM yyyy')}"></div>
+                </div>
+                <span class="badge" th:text="${a.status}"></span>
+            </div>
+        </section>
+        <div class="workspace-dashboard-side">
+            <section class="panel student-panel">
+                <div class="panel-header"><h2>My queue today</h2><a th:href="@{/student/queue}">Track queue</a></div>
+                <div class="empty" th:if="${activeEntries.isEmpty()}">
+                    <strong>No active tokens</strong>
+                    <span>Check in for an appointment or join a walk-in queue.</span>
+                </div>
+                <div class="workspace-summary-row" th:each="q,stat : ${activeEntries}" th:if="${stat.index < 4}">
+                    <div><strong th:text="${q.token}"></strong>
+                        <div class="muted" th:text="${services.?[id==#vars.q.serviceId][0].name}"></div>
+                    </div>
+                    <span class="badge" th:text="${q.status}"></span>
+                </div>
+            </section>
+            <section class="panel student-panel">
+                <div class="panel-header"><h2>Recent updates</h2><a th:href="@{/student/notifications}">View all</a></div>
+                <p class="muted" th:if="${notifications.isEmpty()}">Booking and queue updates will appear here.</p>
+                <div class="notification" th:classappend="${!n.seen ? 'student-unread' : ''}" th:each="n,stat : ${notifications}" th:if="${stat.index < 3}">
+                    <div><p th:text="${n.message}"></p>
+                        <small th:text="${#temporals.format(n.createdAt.atZone(T(java.time.ZoneId).of('Asia/Kolkata')), 'dd MMM, hh:mm a')}"></small>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</main>
+</body>
+</html>

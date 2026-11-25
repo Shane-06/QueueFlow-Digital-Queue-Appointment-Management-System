@@ -1,0 +1,186 @@
+.workspace-theme {
+    --navy: #163e33;
+    --bg: #f8f7f2;
+    --surface: #fff;
+    --text: #172e28;
+    --muted: #4d5f56;
+    --border: #dddcd2;
+    --accent: #25624d;
+    --sidebar: 218px;
+    font-size: 1rem;
+}
+
+.workspace-theme .top { background: #fffdf8; }
+.workspace-theme .brand::before { background: #163e33; font-family: Georgia, serif; }
+.workspace-theme .account-chip { font-size: .875rem; }
+.workspace-theme .nav { background: #10332a; }
+.workspace-theme .nav .eyebrow { color: #f4ca75; font-size: .7rem; }
+.workspace-theme .nav a { color: #e0ebe3; font-size: .9375rem; }
+.workspace-theme .nav a::before { border-color: #a6c0ad; }
+.workspace-theme .nav a:hover { background: #214c40; }
+.workspace-theme .nav a[aria-current="page"] {
+    background: #244e42;
+    color: #fff;
+    box-shadow: inset 3px 0 #f4ca75;
+}
+.workspace-theme .nav a[aria-current="page"]::before { background: #f4ca75; border-color: #f4ca75; }
+.workspace-theme .button:hover, .workspace-theme button:hover { background: #215742; }
+.workspace-theme .secondary:hover { background: #e8f0e9; }
+.workspace-theme input { border-color: #aab5ad; }
+.workspace-theme .workspace { max-width: calc(var(--sidebar) + 84rem); }
+.workspace-theme .panel { border-radius: .8rem; }
+.workspace-theme .panel-header { align-items: center; border-color: #ebe9e0; }
+.workspace-theme .panel-header h2 { margin: 0; }
+.workspace-theme .panel-header a { font-size: .875rem; font-weight: 650; }
+.workspace-theme .empty { background: #f8f8f3; padding: 1.35rem; text-align: left; }
+.workspace-theme .empty p:last-child, .workspace-theme .student-panel > p:last-child { margin-bottom: 0; }
+.workspace-theme .badge { min-width: max-content; font-size: .6875rem; }
+.workspace-theme .badge[data-status="WAITING"], .workspace-theme .badge[data-status="BOOKED"] {
+    background: #fbedd1;
+    color: #684611;
+}
+.workspace-theme .badge[data-status="CALLED"], .workspace-theme .badge[data-status="SERVING"] {
+    background: #dcefe3;
+    color: #19583e;
+}
+.workspace-theme .reference { font-size: .75rem; }
+.workspace-theme .workspace-heading { margin-bottom: 1.45rem; }
+.workspace-theme .workspace-heading h1, .workspace-hero h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    letter-spacing: -.035em;
+    line-height: 1.05;
+    font-size: clamp(2.25rem, 4vw, 3.65rem);
+    overflow-wrap: anywhere;
+}
+
+.workspace-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    overflow: hidden;
+    border-radius: 1rem;
+    background: #10332a;
+    color: #fff;
+}
+.workspace-hero-copy { padding: clamp(1.5rem, 3.8vw, 3.4rem); align-self: center; }
+.workspace-hero h1 { margin-bottom: .75rem; }
+.workspace-hero p { color: #e0ebe3; }
+.workspace-hero .workspace-kicker {
+    color: #f4ca75;
+    font-size: .8125rem;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    font-weight: 700;
+}
+.workspace-hero img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+.workspace-theme .workspace-gold { background: #f4ca75; color: #222a20; }
+.workspace-theme .workspace-gold:hover { background: #ffe1a1; }
+.workspace-theme .workspace-hero-link { border-color: #98b4a7; background: transparent; color: #fff; }
+.workspace-theme .workspace-hero .button:focus-visible { outline-color: #f4ca75; }
+
+.workspace-overview-counts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-block: 1.25rem;
+}
+.workspace-count {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4rem 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: .75rem;
+    background: #fff;
+    text-decoration: none;
+    color: var(--text);
+}
+.workspace-count:hover { background: #fff9ec; border-color: #c6a567; }
+.workspace-count strong {
+    font: 400 2rem/1 Georgia, serif;
+    color: var(--navy);
+    min-width: 2ch;
+}
+.workspace-count span { font-size: .9rem; font-weight: 650; }
+.workspace-dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 1rem;
+}
+.workspace-dashboard-side { display: grid; gap: 1rem; min-width: 0; }
+.workspace-dashboard-grid .panel { margin: 0; }
+.workspace-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: .75rem;
+    padding: .85rem 0;
+    border-bottom: 1px solid #ebe9e0;
+}
+.workspace-summary-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.workspace-summary-row .muted { font-size: .875rem; }
+.workspace-theme .notification { overflow-wrap: anywhere; }
+.workspace-theme .notification p { font-size: .9375rem; }
+.workspace-theme .notification small { font-size: .8125rem; }
+.workspace-theme .notification:not(.student-unread)::before { background: #b0b9ad; }
+.student-details { display: flex; flex-wrap: wrap; gap: 1.25rem 3rem; margin: 0 0 1.25rem; }
+.student-details dt { color: var(--muted); font-size: .875rem; }
+.student-details dd { margin: 0; font-weight: 650; overflow-wrap: anywhere; }
+
+.workspace-theme .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.workspace-theme .service-card h2 { font-size: 1.25rem; }
+.workspace-theme .service-card .panel-header { margin-bottom: 1rem; }
+.workspace-theme .service-icon { background: #e8f0e9; color: #163e33; margin-bottom: 0; }
+.workspace-theme .service-card .actions { border-color: #ebe9e0; }
+.workspace-theme .filter { font-size: .9rem; color: var(--text); }
+.workspace-theme .stepper { flex-wrap: wrap; }
+.workspace-theme .stepper span { background: #eeeee7; }
+.workspace-theme .stepper .selected { background: #fbedd1; color: #684611; }
+.workspace-theme .slot:has(button:not(:disabled)):hover { background: #f1f8f3; border-color: #84a794; }
+.workspace-theme .appointment-card .row { align-items: center; }
+.workspace-theme .appointment-card p, .workspace-theme .student-queue-card p { margin-bottom: 0; }
+.workspace-theme .appointment-card h2, .workspace-theme .student-queue-card h2 { font-size: 1.25rem; }
+.workspace-theme .token-number { color: var(--navy); }
+.workspace-theme .student-queue-card .row { justify-content: flex-start; gap: 1rem 2.5rem; }
+.workspace-theme .student-queue-card .notice { background: #f7edda; border-color: #e6d2aa; color: #5b4122; }
+
+@media (max-width: 68rem) {
+    .workspace-dashboard-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 48rem) {
+    .workspace-theme .top { padding-inline: 1rem; }
+    .workspace-theme .workspace { padding: 1rem; }
+    .workspace-hero { grid-template-columns: minmax(0, 1fr); }
+    .workspace-hero img { height: clamp(8rem, 36vw, 13rem); }
+    .workspace-overview-counts { gap: .5rem; }
+    .workspace-count { align-content: start; padding: .8rem .6rem; }
+    .workspace-count span { font-size: .8125rem; overflow-wrap: anywhere; }
+    .workspace-theme .service-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 24rem) {
+    .workspace-theme .brand small { display: none; }
+    .workspace-theme .top { gap: .5rem; padding-inline: .6rem; }
+    .workspace-theme .workspace-hero-copy { padding: 1.2rem; }
+    .workspace-theme .panel-header { flex-wrap: wrap; }
+}
+
+.operations-theme .operations-counts { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.operations-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem 1.25rem; }
+.operations-links a { font-size: .9375rem; font-weight: 650; }
+.operations-theme .grid-form { align-items: end; }
+.operations-theme .grid-form label, .operations-theme details form > label { font-size: .875rem; }
+.operations-theme .token-row .queue-actions { gap: .5rem; }
+.operations-theme .stats small { font-size: .875rem; }
+.operations-theme .stats .metric-note { font-size: .75rem; }
+.operations-theme .audit-record td { font-size: .875rem; }
+.operations-theme .panel > p:last-child { margin-bottom: 0; }
+
+@media (max-width: 68rem) {
+    .operations-theme .operations-counts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 48rem) {
+    .operations-theme .workspace-count { flex-direction: column; align-items: flex-start; }
+}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{workspace-layout :: head(${page == 'profile' ? 'Profile' : 'Notifications'})}"></head>
+<body class="workspace-theme student-theme">
+<header th:replace="~{fragments :: header}"></header>
+<aside th:replace="~{fragments :: nav}"></aside>
+<main class="workspace">
+    <div class="page-heading workspace-heading">
+        <div><h1 th:text="${page == 'profile' ? 'My profile' : 'Notifications'}"></h1>
+            <p th:text="${page == 'profile' ? 'Your college service account.' : 'Booking confirmations and queue updates.'}"></p></div>
+    </div>
+    <section class="panel student-panel" th:if="${page == 'profile'}">
+        <div class="panel-header"><h2>Account details</h2><span class="badge">Student</span></div>
+        <dl class="student-details">
+            <div><dt>Name</dt><dd th:text="${account.name}"></dd></div>
+            <div><dt>Email</dt><dd th:text="${account.email}"></dd></div>
+        </dl>
+        <p class="muted">Contact your college administrator to update your account.</p>
+    </section>
+    <section class="panel student-panel" th:if="${page == 'notifications'}" aria-label="Booking and queue updates">
+        <div class="empty" th:if="${notifications.isEmpty()}"><strong>No notifications yet</strong></div>
+        <div class="notification" th:each="n : ${notifications}" th:classappend="${!n.seen ? 'student-unread' : ''}">
+            <div><p th:text="${n.message}"></p>
+                <small th:text="${#temporals.format(n.createdAt.atZone(T(java.time.ZoneId).of('Asia/Kolkata')), 'dd MMM, hh:mm a')}"></small>
+            </div>
+            <form th:if="${!n.seen}" th:action="@{/student/notifications/{id}/read(id=${n.id})}" method="post">
+                <button class="secondary" type="submit">Read</button>
+            </form>
+        </div>
+    </section>
+</main>
+</body>
+</html>
